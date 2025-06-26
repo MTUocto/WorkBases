@@ -1,0 +1,33 @@
+Cent OS 6.9 ver (CentOS-6.9-x86_64-bin-DVD.iso)
+
+Oracle VM VirtualBox - 새로 만들기 - ISO 이미지 -> CentOS 지정
+
+IP, 방화벽 설정
+ 1. IP 설정파일 편집
+  #vi /etc/sysconfig/network-scripts/ifcfg-eth0 실행
+  값 입력 후 저장 
+   (IPADDR, GATEWAY, DNS1, DNS2 등은 네트워크 환경 확인하여 입력)
+ 참고) 네트워크 관련 확인 명령어
+  - Gateway = route
+  - DNS = nslookup - server
+  - MAC = ifconfig -a | grep eth
+  - IP = ifconfig
+  - UUID = blkid /dev/sdal
+ 1-2. 설정 내용 시스템 적용 #service network restart 실행
+
+ 2. 방화벽설정
+  2-1. 환경설정
+    - 80(엔진), 433(엔진), 33000(큐브리드 DB포트), 8080(웹포트), 22(ssh) port를 허용하도록 설정
+
+  2-2. 명령어 입력 설정
+    # iptables -I INPUT 1 -p tcp --dport 80 -j ACCEPT
+    # iptables -I OUTPUT 1 -p tcp --dport 80 -j ACCEPT
+    # iptables -I INPUT 1 -p tcp --dport 443 -j ACCEPT
+    # iptables -I OUTPUT 1 -p tcp --dport 443 -j ACCEPT
+    # iptables -I INPUT 1 -p tcp --dport 33000 -j ACCEPT
+    # iptables -I OUTPUT 1 -p tcp --dport 33000 -j ACCEPT
+    # iptables -I INPUT 1 -p tcp --dport 21000 -j ACCEPT
+    # iptables -I OUTPUT 1 -p tcp --dport 21000 -j ACCEPT
+    # iptables -I INPUT 1 -p tcp --dport 8080 -j ACCEPT
+    # iptables -I OUTPUT 1 -p tcp --dport 8080 -j ACCEPT
+    # service iptables save
